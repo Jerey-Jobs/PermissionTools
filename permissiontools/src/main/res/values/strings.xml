@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PermissionTools</string>
+
+    <string name="perm_we_need">我们需要您提供相关权限以使我们能够更好的为您服务.</string>
+    <string name="perm_request">我们即将请求相关的权限.是否前往请求?</string>
+    <string name="perm_already_get_permission">已获得权限</string>
+    <string name="perm_been_denied">已被拒绝获取权限</string>
+    <string name="perm_never_ask">已被拒绝获取权限,请跳转至设置主动开启权限</string>
+    <string name="perm_setting">设置</string>
+    <string name="cancel">取消</string>
 </resources>
