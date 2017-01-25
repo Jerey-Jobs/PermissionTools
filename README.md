@@ -1,7 +1,7 @@
 # PermissionTools
 
-Permissions is a library to simplify basic system permissions logic when targeting Android M or higher<br>
-Permissions一个用于Android权限申请的工具库，当你的应用target版本为23或者更高时才能使用
+PermissionTools is a library to simplify basic system permissions logic when targeting Android M or higher<br>
+PermissionTools一个用于Android权限申请的工具库，当你的应用target版本为23或者更高时才能使用
 
 -------------------
 
