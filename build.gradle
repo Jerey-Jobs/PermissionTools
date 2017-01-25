@@ -6,7 +6,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
-
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'com.novoda:bintray-release:0.3.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -16,8 +18,23 @@ allprojects {
     repositories {
         jcenter()
     }
+    tasks.withType(Javadoc) {
+        options{
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+//添加
+ext {
+    userOrg = 'jerey'//bintray.com用户名
+    groupId = 'com.cn.jerey'//jcenter上的路径
+    uploadName = 'PermissionTools'
+    publishVersion = '1.2'//版本号
+    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+    website = 'https://github.com/Jerey-Jobs/PermissionTools'
+    licences = ['Apache-2.0']
+
 }
