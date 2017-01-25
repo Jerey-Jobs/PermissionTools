@@ -9,8 +9,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,14 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 使用方法：
+ * use :
  * permissionTools =  new PermissionTools.Builder(this)
  * .setOnPermissionCallbacks(new PermissionCallbacks() {
  *
- * @Override public void onPermissionsGranted(int requestCode, List<String> perms) {
+ * public void onPermissionsGranted(int requestCode, Listperms) {
  * Toast.makeText(MainActivity.this,"权限申请通过",Toast.LENGTH_SHORT).show();
  * }
- * @Override public void onPermissionsDenied(int requestCode, List<String> perms) {
+ * public void onPermissionsDenied(int requestCode, List perms) {
  * Toast.makeText(MainActivity.this,"权限申请被拒绝",Toast.LENGTH_SHORT).show();
  * }
  * })
@@ -39,7 +37,7 @@ import java.util.List;
  * .build();
  *
  * permissionTools.requestPermissions(Manifest.permission.CAMERA)
- * @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+ * public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
  * super.onRequestPermissionsResult(requestCode, permissions, grantResults);
  * permissionTools.onRequestPermissionsResult(requestCode,permissions,grantResults);
  * }
@@ -63,7 +61,7 @@ public class PermissionTools {
      * @param callbacks    申请成功或者失败的回调接口
      * @param hintRequest  申请时提醒语句
      * @param hintNeverAsk 被设置为永不提醒后申请失败的提示语句
-     * @param requestCode  请求码
+     * @param requestCode
      */
     private PermissionTools(Context context,
                             PermissionCallbacks callbacks,
@@ -102,11 +100,11 @@ public class PermissionTools {
      * @param permissions
      */
     public void requestPermissions(final String... permissions) {
-        Log.w(TAG, "开始申请权限");
+       // Log.w(TAG, "开始申请权限");
         checkCallingObjectSuitability(mContext);
 
         if (!hasPermissions(mContext, permissions)) {
-            Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
+          //  Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
             boolean shouldShowRationale = false;
             for (String perm : permissions) {
                 shouldShowRationale = shouldShowRationale ||
@@ -114,25 +112,25 @@ public class PermissionTools {
             }
 
             if (shouldShowRationale) {
-                Log.w(TAG, "需要显示意向弹窗");
+                Log.w(TAG, "ned dialog");
                 Activity activity = PermissionUtils.getActivity(mContext);
                 if (null == activity) {
                     return;
                 }
-                Log.w(TAG, "创建Dialog");
+                Log.w(TAG, "new Dialog");
                 AlertDialog dialog = new AlertDialog.Builder(activity)
                         .setMessage(mHintRequestID)
                         .setPositiveButton(mPositiveBtnIDForReq, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.w(TAG, "点击确定 申请权限");
+                                Log.w(TAG, "click PositiveButton executePermissionsRequest");
                                 executePermissionsRequest(mContext, permissions, mRequestCode);
                             }
                         })
                         .setNegativeButton(mNegativeBtnIDForReq, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.w(TAG, "点击取消 拒绝申请权限");
+                                Log.w(TAG, "click NegativeButton and checkDeniedPermissionsNeverAskAgain");
                                 checkDeniedPermissionsNeverAskAgain(
                                         mContext,
                                         mContext.getString(mHintNeverAskID),
@@ -149,7 +147,7 @@ public class PermissionTools {
                         .create();
                 dialog.show();
             } else {
-                Log.w(TAG, "不需要显示意向弹窗");
+                Log.w(TAG, "no need dialog");
                 checkDeniedPermissionsNeverAskAgain(
                         mContext,
                         mContext.getString(mHintNeverAskID),
@@ -161,7 +159,7 @@ public class PermissionTools {
             }
 
         } else {
-            Log.w(TAG, "拥有权限");
+            Log.w(TAG, "has permissions");
             if (mPermissionCallbacks != null) {
                 mPermissionCallbacks.onPermissionsGranted(mRequestCode, Arrays.asList(permissions));
             }
@@ -266,8 +264,8 @@ public class PermissionTools {
 
     private boolean checkDeniedPermissionsNeverAskAgain(final Object object,
                                                         String rationale,
-                                                        @StringRes int positiveButton,
-                                                        @StringRes int negativeButton,
+                                                        int positiveButton,
+                                                        int negativeButton,
                                                         List<String> deniedPerms) {
         return checkDeniedPermissionsNeverAskAgain(object, rationale,
                 positiveButton, negativeButton, null, deniedPerms);
@@ -278,11 +276,11 @@ public class PermissionTools {
      */
     private boolean checkDeniedPermissionsNeverAskAgain(final Object object,
                                                         String rationale,
-                                                        @StringRes int positiveButton,
-                                                        @StringRes int negativeButton,
-                                                        @Nullable DialogInterface.OnClickListener negativeButtonOnClickListener,
+                                                        int positiveButton,
+                                                        int negativeButton,
+                                                        DialogInterface.OnClickListener negativeButtonOnClickListener,
                                                         List<String> deniedPerms) {
-        Log.w(TAG, "检查被拒绝提供的权限是否选中了不再询问");
+    //    Log.w(TAG, "检查被拒绝提供的权限是否选中了不再询问");
         boolean shouldShowRationale;
         for (String perm : deniedPerms) {
             shouldShowRationale = shouldShowRequestPermissionRationale(object, perm);

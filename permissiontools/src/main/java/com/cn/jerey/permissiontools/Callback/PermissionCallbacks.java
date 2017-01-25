@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface PermissionCallbacks {
     /**
-     * 申请权限通过的列表
+     * request successful list
      * @param requestCode
      * @param perms
      */
     void onPermissionsGranted(int requestCode, List<String> perms);
 
     /**
-     * 被拒绝的权限的列表
+     * request denied list
      * @param requestCode
      * @param perms
      */
