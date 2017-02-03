@@ -7,6 +7,8 @@ PermissionTools一个用于Android权限申请的工具库，当你的应用targ
 
 ## import/引入
 
+**if your network is terrible，maybe you cannot download this lib**
+
 project's build.gradle (工程下的 build.gradle)
 
 ``` gradle
