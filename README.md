@@ -75,7 +75,7 @@ To help developer request the permissions easily.
 ##License
 
 ```
-Copyright 2014-2016 lypeer.
+Copyright 2017 Jerey-Jobs.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
