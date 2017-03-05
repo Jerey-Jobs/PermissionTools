@@ -32,7 +32,7 @@ ext {
     userOrg = 'jerey'//bintray.com用户名
     groupId = 'com.cn.jerey'//jcenter上的路径
     uploadName = 'PermissionTools'
-    publishVersion = '1.2'//版本号
+    publishVersion = '1.4'//版本号
     desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
     website = 'https://github.com/Jerey-Jobs/PermissionTools'
     licences = ['Apache-2.0']
