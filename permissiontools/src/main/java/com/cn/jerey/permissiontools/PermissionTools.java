@@ -100,11 +100,11 @@ public class PermissionTools {
      * @param permissions
      */
     public void requestPermissions(final String... permissions) {
-       // Log.w(TAG, "开始申请权限");
+        Log.w(TAG, "开始申请权限");
         checkCallingObjectSuitability(mContext);
 
         if (!hasPermissions(mContext, permissions)) {
-          //  Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
+            Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
             boolean shouldShowRationale = false;
             for (String perm : permissions) {
                 shouldShowRationale = shouldShowRationale ||
@@ -148,13 +148,14 @@ public class PermissionTools {
                 dialog.show();
             } else {
                 Log.w(TAG, "no need dialog");
-                checkDeniedPermissionsNeverAskAgain(
-                        mContext,
-                        mContext.getString(mHintNeverAskID),
-                        mPositiveBtnIDForNeverAsk,
-                        mNegativeBtnIDForNeverAsk,
-                        Arrays.asList(permissions)
-                );
+
+//                checkDeniedPermissionsNeverAskAgain(
+//                        mContext,
+//                        mContext.getString(mHintNeverAskID),
+//                        mPositiveBtnIDForNeverAsk,
+//                        mNegativeBtnIDForNeverAsk,
+//                        Arrays.asList(permissions)
+//                );
                 executePermissionsRequest(mContext, permissions, mRequestCode);
             }
 
