@@ -12,22 +12,21 @@ PermissionTools一个用于Android权限申请的工具库，当你的应用targ
 project's build.gradle (工程下的 build.gradle)
 
 ``` gradle
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url  "http://jerey.bintray.com/maven"
-        }
-    }
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
 }
 ```
 
 module's build.gradle (模块的build.gradle)
 
 ``` gradle
-dependencies {
-    compile 'com.cn.jerey:permissiontools:1.3'
-}
+	dependencies {
+	        compile 'com.github.Jerey-Jobs:PermissionTools:1.4'
+	}
 ```
 
 ## Usage/用法
