@@ -25,7 +25,7 @@ module's build.gradle (模块的build.gradle)
 
 ``` gradle
 	dependencies {
-	        compile 'com.github.Jerey-Jobs:PermissionTools:1.4'
+	        compile 'com.github.Jerey-Jobs:PermissionTools:1.5'
 	}
 ```
 
@@ -50,7 +50,7 @@ you can use it like this：
                         })
                         .setRequestCode(111)
                         .build();
-  permissionTools.requestPermissions(Manifest.permission.CAMERA); 
+  permissionTools.requestPermissions(Manifest.permission.CAMERA);
 ```
 
 and in onRequestPermissionsResult
