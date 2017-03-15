@@ -1,6 +1,7 @@
 package com.cn.jerey.permissiontool;
 
 import android.Manifest;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,7 @@ import com.cn.jerey.permissiontools.PermissionTools;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener{
     PermissionTools permissionTools;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

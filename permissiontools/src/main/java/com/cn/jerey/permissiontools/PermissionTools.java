@@ -2,6 +2,7 @@ package com.cn.jerey.permissiontools;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ import java.util.List;
  * use :
  * permissionTools =  new PermissionTools.Builder(this)
  * .setOnPermissionCallbacks(new PermissionCallbacks() {
- *
+ * <p>
  * public void onPermissionsGranted(int requestCode, Listperms) {
  * Toast.makeText(MainActivity.this,"权限申请通过",Toast.LENGTH_SHORT).show();
  * }
@@ -35,7 +32,7 @@ import java.util.List;
  * })
  * .setRequestCode(111)
  * .build();
- *
+ * <p>
  * permissionTools.requestPermissions(Manifest.permission.CAMERA)
  * public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
  * super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -106,9 +103,11 @@ public class PermissionTools {
         if (!hasPermissions(mContext, permissions)) {
             Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
             boolean shouldShowRationale = false;
-            for (String perm : permissions) {
-                shouldShowRationale = shouldShowRationale ||
-                        ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, perm);
+            if (Build.VERSION.SDK_INT >= 23) {
+                for (String perm : permissions) {
+                    shouldShowRationale = shouldShowRationale |
+                            shouldShowRequestPermissionRationale(mContext, perm);
+                }
             }
 
             if (shouldShowRationale) {
@@ -167,7 +166,13 @@ public class PermissionTools {
         }
     }
 
-
+    /**
+     * 需要在你的Activity中的onRequestPermissionsResult中使用该方法回调结果
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
 
@@ -221,13 +226,13 @@ public class PermissionTools {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Log.w(TAG, "hasPermissions: API version < M, returning true by default");
             return true;
-        }
-
-        for (String perm : perms) {
-            boolean hasPerm = (ContextCompat.checkSelfPermission(context, perm) ==
-                    PackageManager.PERMISSION_GRANTED);
-            if (!hasPerm) {
-                return false;
+        } else {
+            for (String perm : perms) {
+                boolean hasPerm = (context.checkSelfPermission(perm) ==
+                        PackageManager.PERMISSION_GRANTED);
+                if (!hasPerm) {
+                    return false;
+                }
             }
         }
         return true;
@@ -255,7 +260,7 @@ public class PermissionTools {
         checkCallingObjectSuitability(object);
 
         if (object instanceof Activity) {
-            ActivityCompat.requestPermissions((Activity) object, perms, requestCode);
+            ((Activity) object).requestPermissions(perms, requestCode);
         } else if (object instanceof Fragment) {
             ((Fragment) object).requestPermissions(perms, requestCode);
         } else if (object instanceof android.app.Fragment) {
@@ -281,7 +286,7 @@ public class PermissionTools {
                                                         int negativeButton,
                                                         DialogInterface.OnClickListener negativeButtonOnClickListener,
                                                         List<String> deniedPerms) {
-    //    Log.w(TAG, "检查被拒绝提供的权限是否选中了不再询问");
+        //    Log.w(TAG, "检查被拒绝提供的权限是否选中了不再询问");
         boolean shouldShowRationale;
         for (String perm : deniedPerms) {
             shouldShowRationale = shouldShowRequestPermissionRationale(object, perm);
@@ -328,7 +333,7 @@ public class PermissionTools {
     @TargetApi(23)
     private boolean shouldShowRequestPermissionRationale(Object object, String perm) {
         if (object instanceof Activity) {
-            return ActivityCompat.shouldShowRequestPermissionRationale((Activity) object, perm);
+            return ((Activity) object).shouldShowRequestPermissionRationale(perm);
         } else if (object instanceof Fragment) {
             return ((Fragment) object).shouldShowRequestPermissionRationale(perm);
         } else if (object instanceof android.app.Fragment) {
@@ -338,6 +343,9 @@ public class PermissionTools {
         }
     }
 
+    /**
+     * PermissionTools的Builder.
+     */
     public static final class Builder {
         private Context mContext;
         private PermissionCallbacks mPermissionCallbacks;
