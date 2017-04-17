@@ -12,6 +12,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import java.util.List;
  */
 public class PermissionTools {
     private static final String TAG = "PermissionTools";
-
+    public static final String REQUEST_PERMISSION_STRING = "request_permission";
     private Context mContext;
     private PermissionCallbacks mPermissionCallbacks;
     private int mHintRequestID = -1;
@@ -97,11 +98,11 @@ public class PermissionTools {
      * @param permissions
      */
     public void requestPermissions(final String... permissions) {
-        Log.w(TAG, "开始申请权限");
+        Log.w(TAG, "start requestPermissions");
         checkCallingObjectSuitability(mContext);
 
         if (!hasPermissions(mContext, permissions)) {
-            Log.w(TAG, "权限检查不通过，开始判断是否需要显示意向");
+            Log.w(TAG, "permission check does not pass, start check Whether require a dialog");
             boolean shouldShowRationale = false;
             if (Build.VERSION.SDK_INT >= 23) {
                 for (String perm : permissions) {
@@ -221,7 +222,7 @@ public class PermissionTools {
      * @param perms   申请的权限列表
      * @return 如果为true, 表示不需要申请权限, 如果为false, 表示需要申请权限
      */
-    private boolean hasPermissions(Context context, String... perms) {
+    public static boolean hasPermissions(Context context, String... perms) {
         // Always return true for SDK < M, let the system deal with the permissions
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Log.w(TAG, "hasPermissions: API version < M, returning true by default");
@@ -286,7 +287,6 @@ public class PermissionTools {
                                                         int negativeButton,
                                                         DialogInterface.OnClickListener negativeButtonOnClickListener,
                                                         List<String> deniedPerms) {
-        //    Log.w(TAG, "检查被拒绝提供的权限是否选中了不再询问");
         boolean shouldShowRationale;
         for (String perm : deniedPerms) {
             shouldShowRationale = shouldShowRequestPermissionRationale(object, perm);
